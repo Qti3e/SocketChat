@@ -49,7 +49,9 @@ ws.onopen   = function(){
         return false;
     });
     $('#msg_form').submit(function(){
-        ws.send('!'+$('#msg_text').val());
+        var msg_text    = $('#msg_text');
+        ws.send('!'+msg_text.val());
+        msg_text.val('');
         return false;
     });
 };
