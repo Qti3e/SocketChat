@@ -1,0 +1,26 @@
+#msg_text{
+    width: inherit;
+}
+#msg_panel{
+    height: 80%;
+}
+#msg_list{
+    height: 95%;
+    overflow-y: auto;
+}
+#msg_list li{
+    margin-top: 5px;
+}
+html,.p100{
+    height: 100%;
+}
+.right{
+    float: right;
+}
+#users_list{
+    max-height: 94%;
+    overflow-y: auto;
+}
+#users_panel{
+    height:80%;
+}
