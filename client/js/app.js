@@ -41,12 +41,7 @@ ws.onclose  = function(){
 var lastLoginInfo   = Object();
 ws.onopen   = function(){
     wait.hide();
-    var username    = localStorage.getItem('xz_username');
-    if(username == undefined){
-        login.show();
-    }else {
-        app.show();
-    }
+    login.show();
     $('#login_form').submit(function(){
         lastLoginInfo.username  = $('#username').val();
         lastLoginInfo.email     = $('#email').val();
@@ -65,8 +60,6 @@ ws.onmessage    = function(msg){
         alert('Enter another username or email');
     }
     if(msg == 'login_ok'){
-        localStorage.setItem('xz_email',lastLoginInfo.email);
-        localStorage.setItem('xz_username',lastLoginInfo.username);
         login.hide();
         app.show();
     }
@@ -94,6 +87,16 @@ ws.onmessage    = function(msg){
                     '</li>';
                 $('#users_list').append(el);
             }
+        }else if(msg['s'] == 'join'){
+            var name    = msg['username'];
+            var avatar  = msg['avatar'];
+            var el = '<li class="list-group-item" id="user_'+avatar+'">'+
+                '<img class="img-circle" src="https://www.gravatar.com/avatar/'+avatar+'?s=25" width="25px">'+
+                '<b>'+name+'</b>'+
+                '</li>';
+            $('#users_list').append(el);
+        }else if(msg['s'] == 'left'){
+            $('#user_'+msg['avatar']).remove();
         }
     }
 };

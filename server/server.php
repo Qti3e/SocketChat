@@ -91,16 +91,8 @@ class server extends WebSocketServer{
 	 * @return void
 	 */
 	public function connected($user){
-		parse_str(substr($user->headers['get'],1),$get);
-		if($get['username'] === 'null'){
-			$lock   = true;
-		}else{
-			$user->username = $get['username'];
-			$user->email    = $get['email'];
-			$user->avatar   = md5(strtolower(trim($get['email'])));
-			$this->send($user,'@'.json_encode(['s'=>'usersList','list'=>$this->onlineList()]));
-			$this->send2all('@'.json_encode(['s'=>'join','username'=>$user->username,'avatar'=>$user->avatar]));
-		}
+		$user->lock = true;
+		$this->send($user,'@'.json_encode(['s'=>'usersList','list'=>$this->onlineList()]));
 	}
 
 	/***
@@ -124,10 +116,12 @@ class server extends WebSocketServer{
 		for($i  = 0;$i < $count;$i++){
 			$key= $keys[$i];
 			$val= $this->users[$key];
-			$re[]   = [
-				$val->username,
-				$val->avatar
-			];
+			if(!$val->lock){
+				$re[]   = [
+					$val->username,
+					$val->avatar
+				];
+			}
 		}
 		return $re;
 	}
